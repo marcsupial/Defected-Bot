@@ -5,15 +5,17 @@ var warBases=[];
 
 // Create a War Object
 
-function currentWar(){
+function warStatus(){
 	this.clanName = "";
 	this.size;
 	this.active = false;
 }
 
-currentWar.prototype.isActive = function () {
+warStatus.prototype.isActive = function () {
 	return this.active;
 };
+
+let currentWar = new warStatus;
 
 // Set up a Base Object
 
@@ -32,12 +34,12 @@ Base.prototype.isCalled = function () {
 
 function startWar(warSize, enemyName) {
 	for (var i=0; i<warSize; i++){
-		warBases.push({ rank: i })
+		warBases.push({ rank: i });
 	}
 	currentWar.clanName = enemyName;
 	currentWar.size = warSize;
 	currentWar.active = true;
-}
+};
 
 client.on("message", msg => {
 	// Set the bot's prefix
@@ -55,32 +57,56 @@ client.on("message", msg => {
 			.then(message=>console.log(`Sent message: ${message.content}`))
 			.catch(console.error);
  	}
+	// Start war command
 	else if(msg.content.startsWith(prefix + "start war")) {
 		let args = msg.content.split(" ");
 		let numberOfBases = args[2];
 		let enemyName = args[3];
-
-		if (currentWar.active){
-			msg.channel.sendMessage(`We are at war with ${currentWar.enemyName}!`)
-			.then(message=>console.log(`Sent message: ${message.content}`))
-			.catch(console.error);
-			return;
-
-		}
-
-		if (args.length > 3)
+		if (args.length > 3){
 			for (var i=4; i < args.length; i++)
 				enemyName = enemyName + " " + args[i];
+		}
+		// Check if there is already an active war
+		if (currentWar.active){
+			msg.channel.sendMessage(`We are already at war with ${currentWar.clanName}!`)
+				.then(message=>console.log(`Sent message: ${message.content}`))
+				.catch(console.error);
+			return;
+		}
+
+		startWar(numberOfBases, enemyName);
 		msg.channel.sendMessage(`War started against ${enemyName}.`)
 			.then(message => console.log(`Sent message: ${message.content}`))
 			.catch(console.error);
-		startWar(numberOfBases, enemyName);
 	}
+	//End war command
+	else if (msg.content.startsWith(prefix + "end war")) {
+			if (!currentWar.active){
+				msg.channel.sendMessage("We are not at war.")
+					.then(message => console.log(`Sent message: ${message.content}`))
+					.catch(console.error);
+			}
+			else {
+				warBases = [];
+				currentWar.active = false;
+				msg.channel.sendMessage("War ended!")
+					.then(message => console.log(`Sent message: ${message.content}`))
+					.catch(console.error);
+			}
+	}
+
+	// Call base command
 	else if(msg.content.startsWith(prefix + "call")){
 		let args = msg.content.split(" ");
 		let baseCalled = args[1];
 		// Correct for off by 1
 		baseCalled--;
+		if(baseCalled < 0 || baseCalled >= warBases.length){
+			msg.channel.sendMessage(`#${args[1]} is not a valid number. Try again.`)
+			.then(message=>console.log(`Sent message: ${message.content}`))
+			.catch(console.error);
+			return;
+		}
 		if (warBases[baseCalled].called)
 			msg.channel.sendMessage(`#${args[1]} already called by ${warBases[baseCalled].calledBy}. Try again.`)
 			.then(message=>console.log(`Sent message: ${message.content}`))
@@ -120,6 +146,12 @@ client.on("message", msg => {
 		let deleteBase = args[2];
 		// Correct for off by 1
 		deleteBase--;
+		if(deleteBase < 0 || deleteBase >= warBases.length){
+			msg.channel.sendMessage(`#${args[2]} is not a valid number. Try again.`)
+			.then(message=>console.log(`Sent message: ${message.content}`))
+			.catch(console.error);
+			return;
+		}
 		warBases[deleteBase].called=false;
 		msg.channel.sendMessage(`Deleted call on #${args[2]}!`)
 		.then(message=>console.log(`Sent message: ${message.content}`))
@@ -137,7 +169,7 @@ client.on("message", msg => {
 	}
 	else if (msg.content.startsWith(prefix + "get war status")){
 		if (currentWar.isActive){
-			msg.channel.sendMessage(`War is active against ${currentWar.enemyClan}`)
+			msg.channel.sendMessage(`War is active against ${currentWar.clanName}`)
 				.then(message=>console.log(`Sent message: ${message.content}`))
 				.catch(console.error);
 		}
@@ -153,4 +185,4 @@ client.on('ready', () => {
   console.log('I am ready!');
 });
 
-client.login("");
+client.login("Mjc0NjY2NjI3OTU2NjA0OTQ4.C21jDA.00sQ8aw9c8la4qB0AiPvRb-v0xQ");
