@@ -60,13 +60,6 @@ client.on("message", msg => {
 	// Start war command
 	else if(msg.content.startsWith(prefix + "start war")) {
 		let args = msg.content.split(" ");
-		// Input Verification
-		if(args.length > 2){
-			msg.channel.sendMessage(`Incorrect usage! Please try again.`)
-				.then(message=>console.log(`Sent message: ${message.content}`))
-				.catch(console.error);
-			return;
-		}
 		let numberOfBases = args[2];
 		let enemyName = args[3];
 		if(isNaN(numberofBases) || numberofBases < 5 || numberofBases > 50 || numberofBases % 5 != 0){
@@ -254,4 +247,4 @@ client.on('ready', () => {
   console.log('I am ready!');
 });
 
-client.login("");
+client.login("Mjc0NjY2NjI3OTU2NjA0OTQ4.C3QYnQ.N4GXglyfJeakfkwG6SPDlGc4gyI");
