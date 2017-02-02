@@ -157,14 +157,19 @@ client.on("message", msg => {
 		baseAttacked--;
 		let numberOfStars = args[3];
 
-		warBases[baseAttacked].stars = numberOfStars;
-		if (warBases[baseAttacked].called){
-			warBases[baseAttacked].called = false;
+		if(msg.author != wasBases[baseAttacked].calledBy){
+			msg.channel.sendMessage(`Sorry ${msg.author}, you don't have any calls on #${args[1]}.`)
+				.then(message=>console.log(`Sent message: ${message.content}`))
+				.catch(console.error);
+			return;
 		}
 
+		warBases[baseAttacked].stars = numberOfStars;
+		warBases[baseAttacked].called = false;
+
 		msg.channel.sendMessage(`Logged ${numberOfStars} on #${args[1]}!`)
-		.then(message=>console.log(`Sent message: ${message.content}`))
-		.catch(console.error);
+			.then(message=>console.log(`Sent message: ${message.content}`))
+			.catch(console.error);
 
 		if (numberOfStars == 3){
 			msg.channel.sendMessage(`Way to not suck!`)
