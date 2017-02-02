@@ -60,9 +60,10 @@ client.on("message", msg => {
 	// Start war command
 	else if(msg.content.startsWith(prefix + "start war")) {
 		let args = msg.content.split(" ");
+		// Input Verification
 		let numberOfBases = args[2];
 		let enemyName = args[3];
-		if(isNaN(numberofBases) || numberofBases < 5 || numberofBases > 50 || numberofBases % 5 != 0){
+		if(isNaN(numberOfBases) || numberOfBases < 5 || numberOfBases > 50 || numberOfBases % 5 != 0){
 			msg.channel.sendMessage(`Incorrect usage! Please try again.`)
 				.then(message=>console.log(`Sent message: ${message.content}`))
 				.catch(console.error);
@@ -90,7 +91,7 @@ client.on("message", msg => {
 	else if (msg.content.startsWith(prefix + "end war")) {
 		// Input Verification
 		let args = msg.content.split(" ");
-		if(args.length > 1){
+		if(args.length > 2){
 			msg.channel.sendMessage(`Incorrect usage! Please try again.`)
 				.then(message=>console.log(`Sent message: ${message.content}`))
 				.catch(console.error);
@@ -114,7 +115,7 @@ client.on("message", msg => {
 	else if(msg.content.startsWith(prefix + "call")){
 		let args = msg.content.split(" ");
 		// Input Verification
-		if(args.length > 1 || isNaN(args[1])){
+		if(args.length > 2 || isNaN(args[1])){
 			msg.channel.sendMessage(`Incorrect usage! Please try again.`)
 				.then(message=>console.log(`Sent message: ${message.content}`))
 				.catch(console.error);
@@ -145,7 +146,7 @@ client.on("message", msg => {
 	else if (msg.content.startsWith(prefix + "attacked")) {
 		let args = msg.content.split(" ");
 		// Input Verification
-		if(args.length > 4 || isNaN(args[1]) || isNaN(args[3])){
+		if(args.length > 5 || isNaN(args[1]) || isNaN(args[3])){
 			msg.channel.sendMessage(`Incorrect usage! Please try again.`)
 				.then(message=>console.log(`Sent message: ${message.content}`))
 				.catch(console.error);
@@ -175,7 +176,7 @@ client.on("message", msg => {
 	else if (msg.content.startsWith(prefix + "delete call")) {
 		let args = msg.content.split(" ");
 		// Input Verification
-		if(args.length > 2 || isNaN(args[2])){
+		if(args.length > 3 || isNaN(args[2])){
 			msg.channel.sendMessage(`Incorrect usage! Please try again.`)
 				.then(message=>console.log(`Sent message: ${message.content}`))
 				.catch(console.error);
@@ -199,7 +200,7 @@ client.on("message", msg => {
 	else if (msg.content.startsWith(prefix + "get calls")) {
 		let args = msg.content.split(" ");
 		// Input Verification
-		if(args.length > 1){
+		if(args.length > 2){
 			msg.channel.sendMessage(`Incorrect usage! Please try again.`)
 				.then(message=>console.log(`Sent message: ${message.content}`))
 				.catch(console.error);
@@ -224,7 +225,7 @@ client.on("message", msg => {
 	else if (msg.content.startsWith(prefix + "get war status")){
 		let args = msg.content.split(" ");
 		// Input Verification
-		if(args.length > 2){
+		if(args.length > 3){
 			msg.channel.sendMessage(`Incorrect usage! Please try again.`)
 				.then(message=>console.log(`Sent message: ${message.content}`))
 				.catch(console.error);
@@ -247,4 +248,4 @@ client.on('ready', () => {
   console.log('I am ready!');
 });
 
-client.login("Mjc0NjY2NjI3OTU2NjA0OTQ4.C3QYnQ.N4GXglyfJeakfkwG6SPDlGc4gyI");
+client.login("");
